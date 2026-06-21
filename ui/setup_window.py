@@ -1,4 +1,6 @@
 import tkinter as tk
+from tkinter import messagebox
+from storage.vault_storage import save_new_vault
 
 
 class SetupWindow:
@@ -53,4 +55,21 @@ class SetupWindow:
         create_button.pack(pady=20)
 
     def create_vault(self):
-        print("Create Vault clicked")
+        password = self.password_entry.get()
+        confirm_password = self.confirm_entry.get()
+
+        if password != confirm_password:
+            messagebox.showerror(
+                "Error",
+                "Passwords do not match."
+            )
+            return
+
+        save_new_vault(password)
+
+        messagebox.showinfo(
+            "Success",
+            "Vault created successfully!"
+        )
+
+        self.window.destroy()
