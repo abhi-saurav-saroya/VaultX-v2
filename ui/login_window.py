@@ -1,6 +1,7 @@
 import tkinter as tk
 from storage.vault_storage import vault_exists
 from tkinter import messagebox
+from ui.setup_window import SetupWindow
 
 
 class LoginWindow:
@@ -53,3 +54,5 @@ class LoginWindow:
                 "VaultX",
                 "No vault found. First-time setup required."
             )
+            self.root.withdraw()
+            SetupWindow()
