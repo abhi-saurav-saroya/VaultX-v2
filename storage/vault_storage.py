@@ -17,3 +17,8 @@ def save_new_vault(master_password):
 
     with open(VAULT_FILE, "w") as file:
         json.dump(vault_data, file, indent=4)
+
+    
+def load_vault():
+    with open(VAULT_FILE, "r") as file:
+        return json.load(file)

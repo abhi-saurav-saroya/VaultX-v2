@@ -1,7 +1,8 @@
 import tkinter as tk
-from storage.vault_storage import vault_exists
+from storage.vault_storage import vault_exists, load_vault
 from tkinter import messagebox
 from ui.setup_window import SetupWindow
+from ui.dashboard_window import DashboardWindow
 
 
 class LoginWindow:
@@ -10,6 +11,8 @@ class LoginWindow:
         self.root.title("VaultX v2")
         self.root.geometry("500x300")
         self.root.resizable(False, False)
+
+        self.attempts_left = 3
 
         self.create_widgets()
 
@@ -45,10 +48,27 @@ class LoginWindow:
 
     def unlock_vault(self):
         if vault_exists():
-            messagebox.showinfo(
-                "VaultX",
-                "Vault found!"
-            )
+            vault = load_vault()
+
+            stored_password = vault["master_password"]
+
+            if self.password_entry.get() == stored_password:
+                self.root.withdraw()
+                DashboardWindow()
+
+            else:
+                self.attempts_left -= 1
+
+                if self.attempts_left > 0:
+                    messagebox.showerror(
+                        "VaultX",
+                        f"Wrong password. {self.attempts_left} attempts remaining."
+                    )
+                else:
+                    messagebox.showerror(
+                        "VaultX",
+                        "Access denied."
+                    )
         else:
             messagebox.showinfo(
                 "VaultX",
