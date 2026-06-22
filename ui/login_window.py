@@ -55,4 +55,4 @@ class LoginWindow:
                 "No vault found. First-time setup required."
             )
             self.root.withdraw()
-            SetupWindow()
+            SetupWindow(self.root)

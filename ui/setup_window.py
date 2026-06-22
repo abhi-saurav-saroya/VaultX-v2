@@ -1,11 +1,19 @@
 import tkinter as tk
 from tkinter import messagebox
 from storage.vault_storage import save_new_vault
+from ui.dashboard_window import DashboardWindow
 
 
 class SetupWindow:
-    def __init__(self):
+    def __init__(self, login_window):
+        self.login_window = login_window
+
         self.window = tk.Toplevel()
+
+        self.window.protocol(
+            "WM_DELETE_WINDOW",
+            self.on_close
+        )
 
         self.window.title("VaultX Setup")
         self.window.geometry("500x300")
@@ -64,6 +72,13 @@ class SetupWindow:
                 "Passwords do not match."
             )
             return
+        
+        if not password:
+            messagebox.showerror(
+                "Error",
+                "Password cannot be empty."
+            )
+            return
 
         save_new_vault(password)
 
@@ -72,4 +87,10 @@ class SetupWindow:
             "Vault created successfully!"
         )
 
+        self.window.destroy()
+        DashboardWindow()
+        
+
+    def on_close(self):
+        self.login_window.deiconify()
         self.window.destroy()
