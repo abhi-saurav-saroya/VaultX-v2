@@ -3,6 +3,7 @@ from storage.vault_storage import vault_exists, load_vault
 from tkinter import messagebox
 from ui.setup_window import SetupWindow
 from ui.dashboard_window import DashboardWindow
+from security.hashing import hash_password
 
 
 class LoginWindow:
@@ -50,9 +51,11 @@ class LoginWindow:
         if vault_exists():
             vault = load_vault()
 
-            stored_password = vault["master_password"]
+            stored_hash = vault["master_password_hash"]
 
-            if self.password_entry.get() == stored_password:
+            entered_hash = hash_password(self.password_entry.get())
+
+            if entered_hash == stored_hash:
                 self.root.withdraw()
                 DashboardWindow()
 

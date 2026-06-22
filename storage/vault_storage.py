@@ -11,7 +11,7 @@ def vault_exists():
 
 def save_new_vault(master_password):
     vault_data = {
-        "master_password": master_password,
+        "master_password_hash": master_password,
         "credentials": []
     }
 

@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from storage.vault_storage import save_new_vault
 from ui.dashboard_window import DashboardWindow
+from security.hashing import hash_password
 
 
 class SetupWindow:
@@ -80,7 +81,8 @@ class SetupWindow:
             )
             return
 
-        save_new_vault(password)
+        hashed_password = hash_password(password)
+        save_new_vault(hashed_password)
 
         messagebox.showinfo(
             "Success",
