@@ -6,7 +6,7 @@ class DashboardWindow:
         self.window = tk.Toplevel()
 
         self.window.title("VaultX Dashboard")
-        self.window.geometry("800x600")
+        self.window.geometry("900x600")
 
         self.create_widgets()
 
@@ -16,45 +16,94 @@ class DashboardWindow:
             text="VaultX Dashboard",
             font=("Arial", 20, "bold")
         )
-        title.pack(pady=20)
+        title.pack(pady=10)
 
-        add_button = tk.Button(
-            self.window,
+        # Main container
+        main_frame = tk.Frame(self.window)
+        main_frame.pack(fill="both", expand=True, padx=10, pady=10)
+
+        # Left navigation panel
+        nav_frame = tk.Frame(main_frame)
+        nav_frame.pack(side="left", fill="y", padx=(0, 10))
+
+        tk.Button(
+            nav_frame,
             text="Add Credential",
             width=20,
-            command=self.add_credential
-        )
-        add_button.pack(pady=5)
+            command=self.show_add_credential
+        ).pack(pady=5)
 
-        view_button = tk.Button(
-            self.window,
+        tk.Button(
+            nav_frame,
             text="View Credentials",
             width=20,
-            command=self.view_credentials
-        )
-        view_button.pack(pady=5)
+            command=self.show_view_credentials
+        ).pack(pady=5)
 
-        generate_button = tk.Button(
-            self.window,
+        tk.Button(
+            nav_frame,
             text="Generate Password",
             width=20,
-            command=self.generate_password
-        )
-        generate_button.pack(pady=5)
+            command=self.show_generate_password
+        ).pack(pady=5)
 
-        exit_button = tk.Button(
-            self.window,
+        tk.Button(
+            nav_frame,
             text="Exit",
             width=20,
             command=self.window.destroy
+        ).pack(pady=20)
+
+        # Right content panel
+        self.content_frame = tk.Frame(
+            main_frame,
+            relief="solid",
+            borderwidth=1
         )
-        exit_button.pack(pady=20)
+        self.content_frame.pack(
+            side="right",
+            fill="both",
+            expand=True
+        )
 
-    def add_credential(self):
-        print("Add Credential clicked")
+        self.show_welcome_screen()
 
-    def view_credentials(self):
-        print("View Credentials clicked")
+    def clear_content(self):
+        for widget in self.content_frame.winfo_children():
+            widget.destroy()
 
-    def generate_password(self):
-        print("Generate Password clicked")
+    def show_welcome_screen(self):
+        self.clear_content()
+
+        tk.Label(
+            self.content_frame,
+            text="Welcome to VaultX v2",
+            font=("Arial", 18, "bold")
+        ).pack(pady=30)
+
+    def show_add_credential(self):
+        self.clear_content()
+
+        tk.Label(
+            self.content_frame,
+            text="Add Credential",
+            font=("Arial", 16, "bold")
+        ).pack(pady=20)
+
+    def show_view_credentials(self):
+        self.clear_content()
+
+        tk.Label(
+            self.content_frame,
+            text="View Credentials",
+            font=("Arial", 16, "bold")
+        ).pack(pady=20)
+
+    def show_generate_password(self):
+        self.clear_content()
+
+        tk.Label(
+            self.content_frame,
+            text="Generate Password",
+            font=("Arial", 16, "bold")
+        ).pack(pady=20)
