@@ -1,4 +1,7 @@
 import tkinter as tk
+from tkinter import messagebox
+
+from storage.vault_storage import add_credential
 
 
 class DashboardWindow:
@@ -90,6 +93,46 @@ class DashboardWindow:
             font=("Arial", 16, "bold")
         ).pack(pady=20)
 
+        tk.Label(
+            self.content_frame,
+            text="Website"
+        ).pack()
+
+        self.website_entry = tk.Entry(
+            self.content_frame,
+            width=40
+        )
+        self.website_entry.pack(pady=5)
+
+        tk.Label(
+            self.content_frame,
+            text="Username"
+        ).pack()
+
+        self.username_entry = tk.Entry(
+            self.content_frame,
+            width=40
+        )
+        self.username_entry.pack(pady=5)
+
+        tk.Label(
+            self.content_frame,
+            text="Password"
+        ).pack()
+
+        self.password_entry = tk.Entry(
+            self.content_frame,
+            width=40,
+            show="*"
+        )
+        self.password_entry.pack(pady=5)
+
+        tk.Button(
+            self.content_frame,
+            text="Save Credential",
+            command=self.save_credential
+        ).pack(pady=20)
+
     def show_view_credentials(self):
         self.clear_content()
 
@@ -107,3 +150,30 @@ class DashboardWindow:
             text="Generate Password",
             font=("Arial", 16, "bold")
         ).pack(pady=20)
+
+    def save_credential(self):
+        website = self.website_entry.get().strip()
+        username = self.username_entry.get().strip()
+        password = self.password_entry.get().strip()
+    
+        if not website or not username or not password:
+            messagebox.showerror(
+                "Error",
+                "All fields are required."
+            )
+            return
+    
+        add_credential(
+            website,
+            username,
+            password
+        )
+    
+        messagebox.showinfo(
+            "Success",
+            "Credential saved successfully."
+        )
+    
+        self.website_entry.delete(0, tk.END)
+        self.username_entry.delete(0, tk.END)
+        self.password_entry.delete(0, tk.END)

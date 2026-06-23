@@ -22,3 +22,18 @@ def save_new_vault(master_password):
 def load_vault():
     with open(VAULT_FILE, "r") as file:
         return json.load(file)
+    
+
+def add_credential(website, username, password):
+    vault = load_vault()
+
+    credential = {
+        "website": website,
+        "username": username,
+        "password": password
+    }
+
+    vault["credentials"].append(credential)
+
+    with open(VAULT_FILE, "w") as file:
+        json.dump(vault, file, indent=4)
