@@ -1,5 +1,6 @@
 from pathlib import Path
 import json
+from security.encryption import encrypt_text
 
 
 VAULT_FILE = Path("data/vault.json")
@@ -30,7 +31,7 @@ def add_credential(website, username, password):
     credential = {
         "website": website,
         "username": username,
-        "password": password
+        "password": encrypt_text(password)
     }
 
     vault["credentials"].append(credential)

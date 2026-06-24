@@ -3,6 +3,7 @@ from tkinter import messagebox
 from storage.vault_storage import save_new_vault
 from ui.dashboard_window import DashboardWindow
 from security.hashing import hash_password
+from security.encryption import generate_key
 
 
 class SetupWindow:
@@ -80,7 +81,8 @@ class SetupWindow:
                 "Password cannot be empty."
             )
             return
-
+        
+        generate_key()
         hashed_password = hash_password(password)
         save_new_vault(hashed_password)
 
