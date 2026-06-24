@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 
 from storage.vault_storage import add_credential
+from storage.vault_storage import get_credentials
+from security.encryption import decrypt_text
 
 
 class DashboardWindow:
@@ -138,9 +140,21 @@ class DashboardWindow:
 
         tk.Label(
             self.content_frame,
-            text="View Credentials",
+            text="Stored Credentials",
             font=("Arial", 16, "bold")
-        ).pack(pady=20)
+        ).pack(pady=10)
+
+        credentials = get_credentials()
+
+        if not credentials:
+            tk.Label(
+                self.content_frame,
+                text="No credentials stored."
+            ).pack(pady=20)
+            return
+
+        for credential in credentials:
+            self.create_credential_row(credential)
 
     def show_generate_password(self):
         self.clear_content()
@@ -177,3 +191,61 @@ class DashboardWindow:
         self.website_entry.delete(0, tk.END)
         self.username_entry.delete(0, tk.END)
         self.password_entry.delete(0, tk.END)
+
+    def toggle_password(self, credential, password_label, button):
+        if button["text"] == "Reveal":
+            decrypted_password = decrypt_text(credential["password"])
+
+            password_label.config(
+                text=decrypted_password
+            )
+
+            button.config(
+                text="Hide"
+            )
+
+        else:
+            password_label.config(
+                text="********"
+            )
+
+            button.config(
+                text="Reveal"
+            )
+
+    def create_credential_row(self, credential):
+        row_frame = tk.Frame(self.content_frame)
+        row_frame.pack(fill="x", padx=10, pady=5)
+    
+        tk.Label(
+            row_frame,
+            text=credential["website"],
+            width=20,
+            anchor="w"
+        ).pack(side="left")
+    
+        tk.Label(
+            row_frame,
+            text=credential["username"],
+            width=20,
+            anchor="w"
+        ).pack(side="left")
+    
+        password_label = tk.Label(
+            row_frame,
+            text="********",
+            width=20,
+            anchor="w"
+        )
+        password_label.pack(side="left")
+    
+        reveal_button = tk.Button(
+            row_frame,
+            text="Reveal",
+            command=lambda: self.toggle_password(
+                credential,
+                password_label,
+                reveal_button
+            )
+        )
+        reveal_button.pack(side="left")

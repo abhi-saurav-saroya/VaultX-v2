@@ -38,3 +38,8 @@ def add_credential(website, username, password):
 
     with open(VAULT_FILE, "w") as file:
         json.dump(vault, file, indent=4)
+
+
+def get_credentials():
+    vault = load_vault()
+    return vault["credentials"]
