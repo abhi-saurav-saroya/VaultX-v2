@@ -37,33 +37,21 @@ class DashboardWindow:
         nav_frame = tk.Frame(main_frame)
         nav_frame.pack(side="left", fill="y", padx=(0, 10))
 
-        tk.Button(
-            nav_frame,
-            text="Add Credential",
-            width=BUTTON_WIDTH,
-            command=self.show_add_credential
-        ).pack(pady=5)
+        navigation_buttons = [
+            ("Add Credential", self.show_add_credential),
+            ("View Credentials", self.show_view_credentials),
+            ("Generate Password", self.show_generate_password),
+        ]
+        
+        for text, command in navigation_buttons:
+            self.create_button(nav_frame, text, command)
 
-        tk.Button(
+        self.create_button(
             nav_frame,
-            text="View Credentials",
-            width=BUTTON_WIDTH,
-            command=self.show_view_credentials
-        ).pack(pady=5)
-
-        tk.Button(
-            nav_frame,
-            text="Generate Password",
-            width=BUTTON_WIDTH,
-            command=self.show_generate_password
-        ).pack(pady=5)
-
-        tk.Button(
-            nav_frame,
-            text="Exit",
-            width=BUTTON_WIDTH,
-            command=self.window.destroy
-        ).pack(pady=20)
+            "Exit",
+            self.window.destroy,
+            pady=20
+        )
 
         # Right content panel
         self.content_frame = tk.Frame(
@@ -196,7 +184,7 @@ class DashboardWindow:
 
     def show_generate_password(self):
         self.clear_content()
-    
+
         self.create_label(
             self.content_frame,
             "Generate Password",
