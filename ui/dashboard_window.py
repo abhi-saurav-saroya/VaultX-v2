@@ -83,80 +83,112 @@ class DashboardWindow:
         for widget in self.content_frame.winfo_children():
             widget.destroy()
 
+    def create_label(self, parent, text, font=None, pady=0):
+        label = tk.Label(
+            parent,
+            text=text,
+            font=font
+        )
+        label.pack(pady=pady)
+
+        return label
+
+
+    def create_entry(self, parent, show=None):
+        entry = tk.Entry(
+            parent,
+            width=ENTRY_WIDTH,
+            show=show
+        )
+        entry.pack(pady=5)
+
+        return entry
+
+
+    def create_button(self, parent, text, command, pady=5):
+        button = tk.Button(
+            parent,
+            text=text,
+            width=BUTTON_WIDTH,
+            command=command
+        )
+        button.pack(pady=pady)
+
+        return button
+
     def show_welcome_screen(self):
         self.clear_content()
 
-        tk.Label(
+        self.create_label(
             self.content_frame,
-            text="Welcome to VaultX v2",
-            font=("Arial", 18, "bold")
-        ).pack(pady=30)
+            "Welcome to VaultX v2",
+            TITLE_FONT,
+            pady=30
+        )
 
     def show_add_credential(self):
         self.clear_content()
 
-        tk.Label(
+        self.create_label(
             self.content_frame,
-            text="Add Credential",
-            font=HEADING_FONT
-        ).pack(pady=20)
-
-        tk.Label(
-            self.content_frame,
-            text="Website"
-        ).pack()
-
-        self.website_entry = tk.Entry(
-            self.content_frame,
-            width=ENTRY_WIDTH
+            "Add Credential",
+            HEADING_FONT,
+            pady=20
         )
-        self.website_entry.pack(pady=5)
 
-        tk.Label(
+        self.create_label(
             self.content_frame,
-            text="Username"
-        ).pack()
-
-        self.username_entry = tk.Entry(
-            self.content_frame,
-            width=ENTRY_WIDTH
+            "Website"
         )
-        self.username_entry.pack(pady=5)
 
-        tk.Label(
-            self.content_frame,
-            text="Password"
-        ).pack()
+        self.website_entry = self.create_entry(
+            self.content_frame
+        )
 
-        self.password_entry = tk.Entry(
+        self.create_label(
             self.content_frame,
-            width=ENTRY_WIDTH,
+            "Username"
+        )
+
+        self.username_entry = self.create_entry(
+            self.content_frame
+        )
+
+        self.create_label(
+            self.content_frame,
+            "Password"
+        )
+
+        self.password_entry = self.create_entry(
+            self.content_frame,
             show="*"
         )
-        self.password_entry.pack(pady=5)
 
-        tk.Button(
+        self.create_button(
             self.content_frame,
-            text="Save Credential",
-            command=self.save_credential
-        ).pack(pady=20)
+            "Save Credential",
+            self.save_credential,
+            pady=20
+        )
 
     def show_view_credentials(self):
         self.clear_content()
 
-        tk.Label(
+        self.create_label(
             self.content_frame,
-            text="Stored Credentials",
-            font=HEADING_FONT
-        ).pack(pady=10)
+            "Stored Credentials",
+            HEADING_FONT,
+            pady=10
+        )
 
         credentials = get_credentials()
 
         if not credentials:
-            tk.Label(
+            self.create_label(
                 self.content_frame,
-                text="No credentials stored."
-            ).pack(pady=20)
+                "No credentials stored.",
+                pady=20
+            )
             return
 
         for credential in credentials:
@@ -164,12 +196,13 @@ class DashboardWindow:
 
     def show_generate_password(self):
         self.clear_content()
-
-        tk.Label(
+    
+        self.create_label(
             self.content_frame,
-            text="Generate Password",
-            font=HEADING_FONT
-        ).pack(pady=20)
+            "Generate Password",
+            HEADING_FONT,
+            pady=20
+        )
 
     def save_credential(self):
         website = self.website_entry.get().strip()
