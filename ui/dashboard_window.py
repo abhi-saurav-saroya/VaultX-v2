@@ -71,6 +71,16 @@ class DashboardWindow:
         for widget in self.content_frame.winfo_children():
             widget.destroy()
 
+    def set_page(self, title, pady=20):
+        self.clear_content()
+
+        self.create_label(
+            self.content_frame,
+            title,
+            HEADING_FONT,
+            pady=pady
+        )
+
     def create_label(self, parent, text, font=None, pady=0):
         label = tk.Label(
             parent,
@@ -115,14 +125,7 @@ class DashboardWindow:
         )
 
     def show_add_credential(self):
-        self.clear_content()
-
-        self.create_label(
-            self.content_frame,
-            "Add Credential",
-            HEADING_FONT,
-            pady=20
-        )
+        self.set_page("Add Credential")
 
         self.create_label(
             self.content_frame,
@@ -160,14 +163,7 @@ class DashboardWindow:
         )
 
     def show_view_credentials(self):
-        self.clear_content()
-
-        self.create_label(
-            self.content_frame,
-            "Stored Credentials",
-            HEADING_FONT,
-            pady=10
-        )
+        self.set_page("Stored Credentials", pady=10)
 
         credentials = get_credentials()
 
@@ -183,14 +179,7 @@ class DashboardWindow:
             self.create_credential_row(credential)
 
     def show_generate_password(self):
-        self.clear_content()
-
-        self.create_label(
-            self.content_frame,
-            "Generate Password",
-            HEADING_FONT,
-            pady=20
-        )
+        self.set_page("Generate Password")
 
     def save_credential(self):
         website = self.website_entry.get().strip()
