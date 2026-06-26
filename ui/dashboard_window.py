@@ -1,9 +1,15 @@
 import tkinter as tk
 from tkinter import messagebox
 
-from storage.vault_storage import add_credential
-from storage.vault_storage import get_credentials
+from storage.vault_storage import add_credential, get_credentials
 from security.encryption import decrypt_text
+
+
+BUTTON_WIDTH = 20
+ENTRY_WIDTH = 40
+
+TITLE_FONT = ("Arial", 20, "bold")
+HEADING_FONT = ("Arial", 16, "bold")
 
 
 class DashboardWindow:
@@ -19,7 +25,7 @@ class DashboardWindow:
         title = tk.Label(
             self.window,
             text="VaultX Dashboard",
-            font=("Arial", 20, "bold")
+            font=TITLE_FONT
         )
         title.pack(pady=10)
 
@@ -34,28 +40,28 @@ class DashboardWindow:
         tk.Button(
             nav_frame,
             text="Add Credential",
-            width=20,
+            width=BUTTON_WIDTH,
             command=self.show_add_credential
         ).pack(pady=5)
 
         tk.Button(
             nav_frame,
             text="View Credentials",
-            width=20,
+            width=BUTTON_WIDTH,
             command=self.show_view_credentials
         ).pack(pady=5)
 
         tk.Button(
             nav_frame,
             text="Generate Password",
-            width=20,
+            width=BUTTON_WIDTH,
             command=self.show_generate_password
         ).pack(pady=5)
 
         tk.Button(
             nav_frame,
             text="Exit",
-            width=20,
+            width=BUTTON_WIDTH,
             command=self.window.destroy
         ).pack(pady=20)
 
@@ -92,7 +98,7 @@ class DashboardWindow:
         tk.Label(
             self.content_frame,
             text="Add Credential",
-            font=("Arial", 16, "bold")
+            font=HEADING_FONT
         ).pack(pady=20)
 
         tk.Label(
@@ -102,7 +108,7 @@ class DashboardWindow:
 
         self.website_entry = tk.Entry(
             self.content_frame,
-            width=40
+            width=ENTRY_WIDTH
         )
         self.website_entry.pack(pady=5)
 
@@ -113,7 +119,7 @@ class DashboardWindow:
 
         self.username_entry = tk.Entry(
             self.content_frame,
-            width=40
+            width=ENTRY_WIDTH
         )
         self.username_entry.pack(pady=5)
 
@@ -124,7 +130,7 @@ class DashboardWindow:
 
         self.password_entry = tk.Entry(
             self.content_frame,
-            width=40,
+            width=ENTRY_WIDTH,
             show="*"
         )
         self.password_entry.pack(pady=5)
@@ -141,7 +147,7 @@ class DashboardWindow:
         tk.Label(
             self.content_frame,
             text="Stored Credentials",
-            font=("Arial", 16, "bold")
+            font=HEADING_FONT
         ).pack(pady=10)
 
         credentials = get_credentials()
@@ -162,7 +168,7 @@ class DashboardWindow:
         tk.Label(
             self.content_frame,
             text="Generate Password",
-            font=("Arial", 16, "bold")
+            font=HEADING_FONT
         ).pack(pady=20)
 
     def save_credential(self):
@@ -220,21 +226,21 @@ class DashboardWindow:
         tk.Label(
             row_frame,
             text=credential["website"],
-            width=20,
+            width=BUTTON_WIDTH,
             anchor="w"
         ).pack(side="left")
     
         tk.Label(
             row_frame,
             text=credential["username"],
-            width=20,
+            width=BUTTON_WIDTH,
             anchor="w"
         ).pack(side="left")
     
         password_label = tk.Label(
             row_frame,
             text="********",
-            width=20,
+            width=BUTTON_WIDTH,
             anchor="w"
         )
         password_label.pack(side="left")
