@@ -43,3 +43,12 @@ def add_credential(website, username, password):
 def get_credentials():
     vault = load_vault()
     return vault["credentials"]
+
+
+def delete_credential_from_vault(index):
+    vault = load_vault()
+
+    vault["credentials"].pop(index)
+
+    with open(VAULT_FILE, "w") as file:
+        json.dump(vault, file, indent=4)

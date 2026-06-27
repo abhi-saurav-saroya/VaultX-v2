@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
-from storage.vault_storage import add_credential, get_credentials
+from storage.vault_storage import add_credential, get_credentials, delete_credential_from_vault
 from security.encryption import decrypt_text
 
 
@@ -175,8 +175,11 @@ class DashboardWindow:
             )
             return
 
-        for credential in credentials:
-            self.create_credential_row(credential)
+        for index, credential in enumerate(credentials):
+            self.create_credential_row(
+                index,
+                credential
+            )
 
     def show_generate_password(self):
         self.set_page("Generate Password")
@@ -229,7 +232,7 @@ class DashboardWindow:
                 text="Reveal"
             )
 
-    def create_credential_row(self, credential):
+    def create_credential_row(self, index, credential):
         row_frame = tk.Frame(self.content_frame)
         row_frame.pack(fill="x", padx=10, pady=5)
     
@@ -265,3 +268,32 @@ class DashboardWindow:
             )
         )
         reveal_button.pack(side="left")
+
+        delete_button = tk.Button(
+            row_frame,
+            text="Delete",
+            command=lambda: self.delete_credential(index)
+        )
+
+        delete_button.pack(
+            side="left",
+            padx=5
+        )
+
+    def delete_credential(self, index):
+        confirm = messagebox.askyesno(
+            "Delete Credential",
+            "Are you sure you want to delete this credential?"
+        )
+
+        if not confirm:
+            return
+
+        delete_credential_from_vault(index)
+
+        messagebox.showinfo(
+            "Success",
+            "Credential deleted successfully."
+        )
+
+        self.show_view_credentials()
