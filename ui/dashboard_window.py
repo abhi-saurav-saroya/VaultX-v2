@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
-from storage.vault_storage import add_credential, get_credentials, delete_credential_from_vault
+from storage.vault_storage import add_credential, get_credentials, delete_credential_from_vault, update_credential
 from security.encryption import decrypt_text
 
 
@@ -18,6 +18,7 @@ class DashboardWindow:
 
         self.window.title("VaultX Dashboard")
         self.window.geometry("900x600")
+        self.edit_index = None
 
         self.create_widgets()
 
@@ -124,7 +125,7 @@ class DashboardWindow:
             pady=30
         )
 
-    def show_add_credential(self):
+    def show_add_credential(self, credential=None, index=None):
         self.set_page("Add Credential")
 
         self.create_label(
@@ -155,12 +156,42 @@ class DashboardWindow:
             show="*"
         )
 
-        self.create_button(
-            self.content_frame,
-            "Save Credential",
-            self.save_credential,
-            pady=20
-        )
+        if credential:
+            self.edit_index = index
+
+            self.website_entry.insert(
+                0,
+                credential["website"]
+            )
+
+            self.username_entry.insert(
+                0,
+                credential["username"]
+            )
+
+            self.password_entry.insert(
+                0,
+                decrypt_text(
+                    credential["password"]
+                )
+            )
+
+            self.create_button(
+                self.content_frame,
+                "Update Credential",
+                self.save_credential,
+                pady=20
+            )
+
+        else:
+            self.edit_index = None
+
+            self.create_button(
+                self.content_frame,
+                "Save Credential",
+                self.save_credential,
+                pady=20
+            )
 
     def show_view_credentials(self):
         self.set_page("Stored Credentials", pady=10)
@@ -196,16 +227,37 @@ class DashboardWindow:
             )
             return
     
-        add_credential(
-            website,
-            username,
-            password
-        )
-    
-        messagebox.showinfo(
-            "Success",
-            "Credential saved successfully."
-        )
+        if self.edit_index is None:
+
+            add_credential(
+                website,
+                username,
+                password
+            )
+
+            messagebox.showinfo(
+                "Success",
+                "Credential saved successfully."
+            )
+
+        else:
+        
+            update_credential(
+                self.edit_index,
+                website,
+                username,
+                password
+            )
+
+            self.edit_index = None
+
+            messagebox.showinfo(
+                "Success",
+                "Credential updated successfully."
+            )
+
+            self.show_view_credentials()
+            return
     
         self.website_entry.delete(0, tk.END)
         self.username_entry.delete(0, tk.END)
@@ -268,6 +320,20 @@ class DashboardWindow:
             )
         )
         reveal_button.pack(side="left")
+
+        edit_button = tk.Button(
+            row_frame,
+            text="Edit",
+            command=lambda: self.show_add_credential(
+                credential,
+                index
+            )
+        )
+        
+        edit_button.pack(
+            side="left",
+            padx=5
+        )
 
         delete_button = tk.Button(
             row_frame,

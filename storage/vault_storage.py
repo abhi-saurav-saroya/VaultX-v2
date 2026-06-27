@@ -52,3 +52,16 @@ def delete_credential_from_vault(index):
 
     with open(VAULT_FILE, "w") as file:
         json.dump(vault, file, indent=4)
+
+
+def update_credential(index, website, username, password):
+    vault = load_vault()
+
+    vault["credentials"][index] = {
+        "website": website,
+        "username": username,
+        "password": encrypt_text(password)
+    }
+
+    with open(VAULT_FILE, "w") as file:
+        json.dump(vault, file, indent=4)
