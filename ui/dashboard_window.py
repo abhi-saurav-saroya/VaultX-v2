@@ -275,9 +275,7 @@ class DashboardWindow:
             self.show_view_credentials()
             return
     
-        self.website_entry.delete(0, tk.END)
-        self.username_entry.delete(0, tk.END)
-        self.password_entry.delete(0, tk.END)
+        self.show_view_credentials()
 
     def toggle_password(self, credential, password_label, button):
         if button["text"] == "Reveal":
