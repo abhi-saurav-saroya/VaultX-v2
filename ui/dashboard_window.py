@@ -42,7 +42,6 @@ class DashboardWindow:
         navigation_buttons = [
             ("Add Credential", self.show_add_credential),
             ("View Credentials", self.show_view_credentials),
-            ("Generate Password", self.show_generate_password),
         ]
         
         for text, command in navigation_buttons:
@@ -164,7 +163,7 @@ class DashboardWindow:
         self.password_entry.pack(
             side="left"
         )
-        
+
         generate_button = tk.Button(
             password_frame,
             text="Generate",
@@ -231,9 +230,6 @@ class DashboardWindow:
                 index,
                 credential
             )
-
-    def show_generate_password(self):
-        self.set_page("Generate Password")
 
     def save_credential(self):
         website = self.website_entry.get().strip()
