@@ -128,51 +128,94 @@ class DashboardWindow:
     def show_add_credential(self, credential=None, index=None):
         self.set_page("Add Credential")
 
-        self.create_label(
-            self.content_frame,
-            "Website"
+        form_frame = tk.Frame(self.content_frame)
+        form_frame.pack(pady=20)
+
+        # Website
+        website_label = tk.Label(
+            form_frame,
+            text="Website"
+        )
+        website_label.grid(
+            row=0,
+            column=0,
+            sticky="w",
+            padx=10,
+            pady=10
         )
 
-        self.website_entry = self.create_entry(
-            self.content_frame
+        self.website_entry = tk.Entry(
+            form_frame,
+            width=ENTRY_WIDTH
+        )
+        self.website_entry.grid(
+            row=0,
+            column=1,
+            padx=10,
+            pady=10
         )
 
-        self.create_label(
-            self.content_frame,
-            "Username"
+        # Username
+        username_label = tk.Label(
+            form_frame,
+            text="Username"
+        )
+        username_label.grid(
+            row=1,
+            column=0,
+            sticky="w",
+            padx=10,
+            pady=10
         )
 
-        self.username_entry = self.create_entry(
-            self.content_frame
+        self.username_entry = tk.Entry(
+            form_frame,
+            width=ENTRY_WIDTH
+        )
+        self.username_entry.grid(
+            row=1,
+            column=1,
+            padx=10,
+            pady=10
         )
 
-        self.create_label(
-            self.content_frame,
-            "Password"
+        # Password
+        password_label = tk.Label(
+            form_frame,
+            text="Password"
         )
-
-        password_frame = tk.Frame(self.content_frame)
-        password_frame.pack(pady=10)
+        password_label.grid(
+            row=2,
+            column=0,
+            sticky="w",
+            padx=10,
+            pady=10
+        )
 
         self.password_entry = tk.Entry(
-            password_frame,
+            form_frame,
             width=ENTRY_WIDTH,
             show="*"
         )
-
-        self.password_entry.pack(
-            side="left"
+        self.password_entry.grid(
+            row=2,
+            column=1,
+            padx=10,
+            pady=10,
+            sticky="w"
         )
 
         generate_button = tk.Button(
-            password_frame,
+            form_frame,
             text="Generate",
             command=self.fill_generated_password
         )
-
-        generate_button.pack(
-            side="left",
-            padx=10
+        generate_button.grid(
+            row=2,
+            column=2,
+            padx=(15, 0),
+            pady=10,
+            sticky="w"
         )
 
         if credential:
