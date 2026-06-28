@@ -3,6 +3,7 @@ from tkinter import messagebox
 
 from storage.vault_storage import add_credential, get_credentials, delete_credential_from_vault, update_credential
 from security.encryption import decrypt_text
+from security.password_generator import generate_password
 
 
 BUTTON_WIDTH = 20
@@ -151,9 +152,28 @@ class DashboardWindow:
             "Password"
         )
 
-        self.password_entry = self.create_entry(
-            self.content_frame,
+        password_frame = tk.Frame(self.content_frame)
+        password_frame.pack(pady=10)
+
+        self.password_entry = tk.Entry(
+            password_frame,
+            width=ENTRY_WIDTH,
             show="*"
+        )
+
+        self.password_entry.pack(
+            side="left"
+        )
+        
+        generate_button = tk.Button(
+            password_frame,
+            text="Generate",
+            command=self.fill_generated_password
+        )
+
+        generate_button.pack(
+            side="left",
+            padx=10
         )
 
         if credential:
@@ -363,3 +383,13 @@ class DashboardWindow:
         )
 
         self.show_view_credentials()
+
+    def fill_generated_password(self):
+        password = generate_password()
+
+        self.password_entry.delete(0, tk.END)
+
+        self.password_entry.insert(
+            0,
+            password
+        )
